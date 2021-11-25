@@ -1,7 +1,7 @@
 require("dotenv").config();
 require("./config/database").connect();
 const express = require("express");
-
+const bcrypt = require("bcrypt");
 const app = express();
 
 app.use(express.json());
@@ -60,6 +60,10 @@ try {
 
     // return new user
     res.status(201).json(user);
+
+    // tell main server that there is new user
+    // we don't need to wait for this operation to complete
+    /* axios.post(`${process.env.SERVER_URL}/register`, user) */
   } catch (err) {
     console.log(err);
   }
