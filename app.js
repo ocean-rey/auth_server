@@ -56,6 +56,8 @@ app.post("/register", async (req, res) => {
     user.token = token;
 
     // return new user
+    console.log("New user created ")
+    console.log(user)
     res.status(201).json(user);
 
     // tell main server that there is new user
@@ -76,7 +78,7 @@ app.post("/login", async (req, res) => {
 
     // Validate user input
     if (!(email && password)) {
-      res.status(400).send("All input is required");
+      return res.status(400).send("All input is required");
     }
     // Validate if user exist in our database
     const user = await User.findOne({ email });
@@ -94,10 +96,12 @@ app.post("/login", async (req, res) => {
       // save user token
       user.token = token;
 
+      console.log("Log in successful");
+      console.log(user)
       // user
-      res.status(200).json(user);
+      return res.status(200).json(user);
     }
-    res.status(400).send("Invalid Credentials");
+    return res.status(400).send("Invalid Credentials");
   } catch (err) {
     console.log(err);
   }
