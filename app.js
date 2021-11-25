@@ -5,7 +5,6 @@ const bcrypt = require("bcryptjs");
 const app = express();
 const jwt = require("jsonwebtoken");
 
-
 app.use(express.json());
 
 // Logic goes here
@@ -19,17 +18,13 @@ const User = require("./model/user");
 
 // Register
 app.post("/register", async (req, res) => {
-
-// our register logic stars here...
-try {
+  // our register logic stars here...
+  try {
     // Get user input
-    const { first_name, last_name, email, password } = req.body;
-
-    // Validate user input
-    if (!(email && password && first_name && last_name)) {
-      res.status(400).send("All input is required");
+    const { email, password } = req.body;
+    if(!(email && password)){
+      return res.status(400).send("Needs email and password")
     }
-
     // check if user already exist
     // Validate if user exist in our database
     const oldUser = await User.findOne({ email });
@@ -43,8 +38,8 @@ try {
 
     // Create user in our database
     const user = await User.create({
-      first_name,
-      last_name,
+      first_name: "not implemented",
+      last_name: "not implented",
       email: email.toLowerCase(), // sanitize: convert email to lowercase
       password: encryptedPassword,
     });
@@ -74,8 +69,8 @@ try {
 
 // Login
 app.post("/login", async (req, res) => {
-// our login logic starts here
-try {
+  // our login logic starts here
+  try {
     // Get user input
     const { email, password } = req.body;
 
@@ -106,7 +101,7 @@ try {
   } catch (err) {
     console.log(err);
   }
-// Our login logic ends here
+  // Our login logic ends here
 });
 
 module.exports = app;
